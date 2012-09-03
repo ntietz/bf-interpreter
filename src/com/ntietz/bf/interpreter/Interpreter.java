@@ -11,6 +11,7 @@ public class Interpreter
     private List<Integer> data;
     private int dataPointer;
     private int instructionPointer;
+    private boolean needsInput;
 
     public Interpreter()
     {
@@ -25,6 +26,8 @@ public class Interpreter
 
         dataPointer = 0;
         instructionPointer = 0;
+
+        needsInput = false;
     }
 
     public void load(String program)
@@ -91,10 +94,31 @@ public class Interpreter
                 case '.' :
                     output = output + Character.toChars(data.get(dataPointer))[0];
                     break;
+
+                case ',' :
+                    needsInput = true;
+                    break;
             }
 
             ++instructionPointer;
+
+            if (needsInput())
+            {
+                break;
+            }
         }
+    }
+
+    public void input(char c)
+    {
+        data.set(dataPointer, (int)c);
+        needsInput = false;
+        run();
+    }
+
+    public boolean needsInput()
+    {
+        return needsInput;
     }
 
     public String output()
