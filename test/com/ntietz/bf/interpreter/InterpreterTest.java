@@ -54,5 +54,47 @@ public class InterpreterTest
         assertEquals("Data pointer should be at 2", 2, interpreter.dataPointer());
         assertTrue("Instruction pointer should have moved", interpreter.instructionPointer() > 0);
     }
+
+    @Test
+    public void testDataEmpty()
+    {
+        Interpreter interpreter = new Interpreter();
+
+        assertEquals("Data should start at 0", 0, interpreter.getData(10));
+    }
+
+    @Test
+    public void testIncrementDataCell()
+    {
+        String program = "+>+++>>>++";
+        Interpreter interpreter = new Interpreter();
+        interpreter.load(program);
+        interpreter.run();
+
+        assertEquals("Data pointer should be at 4", 4, interpreter.dataPointer());
+        assertEquals("Data should still be 0", 0, interpreter.getData(2));
+        assertEquals("Data should still be 0", 0, interpreter.getData(3));
+        assertEquals("Data should still be 0", 0, interpreter.getData(5));
+        assertEquals("Data should have changed", 1, interpreter.getData(0));
+        assertEquals("Data should have changed", 3, interpreter.getData(1));
+        assertEquals("Data should have changed", 2, interpreter.getData(4));
+    }
+
+    @Test
+    public void testDecrementDataCell()
+    {
+        String program = "+>++-+>>>+-+++-";
+        Interpreter interpreter = new Interpreter();
+        interpreter.load(program);
+        interpreter.run();
+
+        assertEquals("Data pointer should be at 4", 4, interpreter.dataPointer());
+        assertEquals("Data should still be 0", 0, interpreter.getData(2));
+        assertEquals("Data should still be 0", 0, interpreter.getData(3));
+        assertEquals("Data should still be 0", 0, interpreter.getData(5));
+        assertEquals("Data should have changed", 1, interpreter.getData(0));
+        assertEquals("Data should have changed", 2, interpreter.getData(1));
+        assertEquals("Data should have changed", 2, interpreter.getData(4));
+    }
 }
 
