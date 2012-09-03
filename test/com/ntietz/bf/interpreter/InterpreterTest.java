@@ -142,5 +142,17 @@ public class InterpreterTest
         assertEquals("Output should be \"Maaa\"", "Maaa", interpreter.output());
 
     }
+
+    @Test
+    public void testHelloWorldProgram()
+    {
+        String program = " ++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.";
+
+        Interpreter interpreter = new Interpreter();
+        interpreter.load(program);
+        interpreter.run();
+
+        assertEquals("Output should match", "Hello World!\n", interpreter.output());
+    }
 }
 
