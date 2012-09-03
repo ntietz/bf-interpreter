@@ -4,6 +4,8 @@ import java.util.*;
 
 public class Interpreter
 {
+    private static final int MEMORY_SIZE = 1000;
+
     private String program;
     private String output;
     private List<Integer> data;
@@ -14,7 +16,13 @@ public class Interpreter
     {
         program = "";
         output = "";
+
         data = new ArrayList<Integer>();
+        for (int index = 0; index < MEMORY_SIZE; ++index)
+        {
+            data.add(0);
+        }
+
         dataPointer = 0;
         instructionPointer = 0;
     }
@@ -39,6 +47,14 @@ public class Interpreter
                 case '<' :
                     --dataPointer;
                     break;
+
+                case '+' :
+                    data.set(dataPointer, data.get(dataPointer)+1);
+                    break;
+
+                case '-' :
+                    data.set(dataPointer, data.get(dataPointer)-1);
+                    break;
             }
 
             ++instructionPointer;
@@ -58,6 +74,18 @@ public class Interpreter
     public int instructionPointer()
     {
         return instructionPointer;
+    }
+
+    public int getData(int index)
+    {
+        if (index < MEMORY_SIZE)
+        {
+            return data.get(index);
+        }
+        else
+        {
+            return 0;
+        }
     }
 }
 
