@@ -55,6 +55,38 @@ public class Interpreter
                 case '-' :
                     data.set(dataPointer, data.get(dataPointer)-1);
                     break;
+
+                case '[' :
+                    if (data.get(dataPointer).equals(0))
+                    {
+                        int count = 1;
+                        while (count > 0)
+                        {
+                            ++instructionPointer;
+                            char next = program.charAt(instructionPointer);
+                            if (next == '[')
+                                ++count;
+                            if (next == ']')
+                                --count;
+                        }
+                    }
+                    break;
+
+                case ']' :
+                    if (!data.get(dataPointer).equals(0))
+                    {
+                        int count = 1;
+                        while (count > 0)
+                        {
+                            --instructionPointer;
+                            char prev = program.charAt(instructionPointer);
+                            if (prev == ']')
+                                ++count;
+                            if (prev == '[')
+                                --count;
+                        }
+                    }
+                    break;
             }
 
             ++instructionPointer;
