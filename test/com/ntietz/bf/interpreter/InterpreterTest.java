@@ -154,5 +154,27 @@ public class InterpreterTest
 
         assertEquals("Output should match", "Hello World!\n", interpreter.output());
     }
+
+    @Test
+    public void testInput()
+    {
+        String program = ",,>,";
+
+        Interpreter interpreter = new Interpreter();
+        interpreter.load(program);
+        interpreter.run();
+
+        assertTrue("Interpreter should be waiting for input", interpreter.needsInput());
+        interpreter.input('a');
+        assertTrue("Interpreter should be waiting for input", interpreter.needsInput());
+        interpreter.input('M');
+        assertTrue("Interpreter should be waiting for input", interpreter.needsInput());
+        interpreter.input('$');
+        assertFalse("Interpreter sholud not be waiting for input", interpreter.needsInput());
+
+        assertEquals("First cell should be 'M'", (int)'M', interpreter.getData(0));
+        assertEquals("Second cell should be '$'", (int)'$', interpreter.getData(1));
+        assertEquals("Third cell should be 0", 0, interpreter.getData(2));
+    }
 }
 
