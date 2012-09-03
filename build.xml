@@ -1,0 +1,74 @@
+<project name="bf-interpreter" default="compile" basedir=".">
+    <description>
+        Simple build file.
+    </description>
+
+    <property name="src" location="src/" />
+    <property name="test" location="test/" />
+    <property name="build" location="build/" />
+    <property name="dist" location="dist/" />
+    <property name="reports" location="reports/" />
+    <property name="extern" location="extern/" />
+ 
+    <path id="classpath.base">
+        <pathelement location="${build}" />
+        <pathelement location="${src}" />
+    </path>
+
+    <path id="classpath.test">
+        <pathelement location="${test}" />
+        <fileset dir="${extern}">
+            <include name="**/*.jar" />
+        </fileset>
+        <path refid="classpath.base" />
+    </path>
+
+    <taskdef classpathref="classpath.test" resource="tasks.properties" />
+
+    <target name="init" description="sets up for the build process">
+        <mkdir dir="${build}" />
+        <mkdir dir="${dist}" />
+        <mkdir dir="${reports}" />
+    </target>
+
+    <target name="compile" depends="init" description="compiles the class files">
+        <javac srcdir="${src}" destdir="${build}" debug="on">
+            <classpath refid="classpath.base" />
+        </javac>
+    </target>
+
+    <target name="jar" depends="init,compile" description="creates a jar of the project">
+        <jar destfile="${dist}/bf.jar">
+            <fileset dir="${build}" includes="**/*.class" />
+            <fileset dir="${src}" includes="**/*.jar" />
+            <manifest>
+                <attribute name="Main-Class" value="com.ntietz.bf.main.Main" />
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="compile-tests" depends="init,compile" description="compiles the tests">
+        <javac srcdir="${test}" destdir="${build}" debug="on">
+            <classpath refid="classpath.test" />
+        </javac>
+    </target>
+
+    <target name="run-tests" depends="compile-tests" description="runs the tests">
+        <junit printsummary="yes" failureProperty="test.failure">
+            <classpath refid="classpath.test" />
+            <formatter type="plain" />
+            <batchtest todir="${reports}">
+                <fileset dir="${test}">
+                    <include name="**/*Test.java" />
+                </fileset>
+            </batchtest>
+        </junit>
+        <fail message="a test failed" if="test.failure" />
+    </target>
+
+    <target name="clean" description="cleans up after the build process">
+        <delete dir="${build}" />
+        <delete dir="${dist}" />
+    </target>
+
+</project>
