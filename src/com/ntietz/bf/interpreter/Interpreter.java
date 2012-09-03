@@ -87,6 +87,10 @@ public class Interpreter
                         }
                     }
                     break;
+
+                case '.' :
+                    output = output + Character.toChars(data.get(dataPointer))[0];
+                    break;
             }
 
             ++instructionPointer;

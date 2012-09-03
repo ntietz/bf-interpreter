@@ -127,5 +127,20 @@ public class InterpreterTest
         assertEquals("Third cell should be 2", 2, interpreter.getData(2));
         assertEquals("Fourth cell should be 0", 0, interpreter.getData(3));
     }
+
+    @Test
+    public void testOutput()
+    {
+        String program = "++ + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + . > + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + ... ";
+
+        Interpreter interpreter = new Interpreter();
+        interpreter.load(program);
+        interpreter.run();
+
+        assertEquals("First cell should be 77", 77, interpreter.getData(0));
+        assertEquals("Second cell should be 97", 97, interpreter.getData(1));
+        assertEquals("Output should be \"Maaa\"", "Maaa", interpreter.output());
+
+    }
 }
 
