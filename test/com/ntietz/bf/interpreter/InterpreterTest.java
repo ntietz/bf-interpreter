@@ -67,6 +67,7 @@ public class InterpreterTest
     public void testIncrementDataCell()
     {
         String program = "+>+++>>>++";
+
         Interpreter interpreter = new Interpreter();
         interpreter.load(program);
         interpreter.run();
@@ -84,6 +85,7 @@ public class InterpreterTest
     public void testDecrementDataCell()
     {
         String program = "+>++-+>>>+-+++-";
+
         Interpreter interpreter = new Interpreter();
         interpreter.load(program);
         interpreter.run();
@@ -95,6 +97,35 @@ public class InterpreterTest
         assertEquals("Data should have changed", 1, interpreter.getData(0));
         assertEquals("Data should have changed", 2, interpreter.getData(1));
         assertEquals("Data should have changed", 2, interpreter.getData(4));
+    }
+
+    @Test
+    public void testJumpPointerForward()
+    {
+        String program = "+>[++[++]++]";
+
+        Interpreter interpreter = new Interpreter();
+        interpreter.load(program);
+        interpreter.run();
+
+        assertEquals("First cell should change", 1, interpreter.getData(0));
+        assertEquals("Second cell should not change.", 0, interpreter.getData(1));
+    }
+
+    @Test
+    public void testJumpPointerBackward()
+    {
+        String program = "+>+>+<<[+>]>";
+
+        Interpreter interpreter = new Interpreter();
+        interpreter.load(program);
+        interpreter.run();
+
+        assertEquals("Data pointer should be at 4", 4, interpreter.dataPointer());
+        assertEquals("First cell should be 2", 2, interpreter.getData(0));
+        assertEquals("Second cell should be 2", 2, interpreter.getData(1));
+        assertEquals("Third cell should be 2", 2, interpreter.getData(2));
+        assertEquals("Fourth cell should be 0", 0, interpreter.getData(3));
     }
 }
 
